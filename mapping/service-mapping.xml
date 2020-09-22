@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--服务映射-->
+<services>
+	<schema-merge>
+        <!-- oracle 默认安装到一个库下，若要分多个库，需设置 merge=false -->
+		<oracle merge="true" target-schema="" />
+        <!-- mysql/sqlsrver 默认安装到不同库下，若要合并到一个库下，可设置 merge=true，target-schema 设置合并的库名，也可以修改所有服务对应的schema -->
+		<mysql merge="false" target-schema="" />
+		<postgresql merge="true" target-schema="hzero" />
+		<sqlserver merge="false" target-schema="" />
+	</schema-merge>
+    <!--  排除更新的表和列(不带列标识忽略整个表)多个以逗号分隔  -->
+    <exclusion>
+        hpfm_tenant.tenant_id
+    </exclusion>
+    <!--  值替换,将excel中所以的 key 的值替换成 value 的值  -->
+    <value-replace flag="false">
+        <data key="${HZERO}" value="SRM"/>
+    </value-replace>
+    <!-- name: 服务名; filename: 对应本地文件名;  schema: 安装目标库名，如果与标准库名不同，可修改此属性 -->
+	<!-- oracle 分库的情况下，schema 将作为用户名和密码，也可添加 username和password属性分别制定oracle的用户名和密码 -->
+    <service name="hzero-platform" filename="hzero_platform" schema="hzero_platform" description="平台服务">
+        <plugin name="iam_tenant" filename="iam_tenant" description="多租户管理插件"/>
+    </service>
+    <service name="hzero-admin" filename="hzero_admin" schema="hzero_admin" description="平台治理服务"/>
+    <service name="hzero-file" filename="hzero_file" schema="hzero_file" description="文件服务"/>
+    <service name="hzero-message" filename="hzero_message" schema="hzero_message" description="消息服务"/>
+    <service name="hzero-scheduler" filename="hzero_scheduler" schema="hzero_scheduler" description="调度服务"/>
+    <service name="hzero-import" filename="hzero_import" schema="hzero_import" description="通用导入服务"/>
+    <service name="hzero-report" filename="hzero_report" schema="hzero_report" description="报表服务"/>
+</services>
